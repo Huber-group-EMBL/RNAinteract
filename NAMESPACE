@@ -1,0 +1,91 @@
+
+importFrom("methods", "show")
+importClassesFrom(cellHTS2, cellHTS)
+importMethodsFrom(cellHTS2, Data, lines, plate, well, pdim)
+importFrom(RColorBrewer,brewer.pal)
+importFrom(ICSNP, HotellingsT2)
+importFrom(geneplotter, multidensity)
+importFrom(grid, unit, unit.c, gpar, gTree, gList, vpPath, grid.draw, viewport, pushViewport, popViewport, downViewport, upViewport, vpTree, vpList, grid.layout, grid.raster, grid.rect, grid.text, grid.polyline, convertWidth, convertHeight, stringWidth, stringHeight, rectGrob, xaxisGrob, yaxisGrob, textGrob, linesGrob, pointsGrob)
+importFrom(gplots, balloonplot)
+importFrom(hwriter, closePage, hwrite, hwriteImage, openPage)
+importFrom(lattice, levelplot, panel.axis, panel.levelplot)
+importFrom(latticeExtra, dendrogramGrob)
+importFrom(limma, eBayes, lmFit)
+importFrom(qvalue, qvalue)
+importFrom(splots, plotScreen)
+
+## classes
+exportClasses(RNAinteract)
+
+# creating an RNAinteract object
+export(createCellHTSFromFiles)
+export(createRNAinteract)
+export(createRNAinteractFromFiles)
+
+# data access
+export(getData)
+export(getMain)
+export(getMainNeg)
+
+export(getReplicateData)
+export(getIndDesignData)
+
+export(getChannelNames)
+export(getScreenNames)
+export(getScale)
+
+# subsetting and bind screen
+export(sgisubset)
+export(bindscreens)
+export(summarizeScreens)
+
+# main analysis and normalization
+export(estimateMainEffect)
+export(normalizeMainEffectQuery)
+export(normalizeMainEffectTemplate)
+export(normalizePlateEffect)
+export(computePI)
+export(computePValues)
+
+#embedding
+export(embedPCA)
+
+# plotting
+export(plotDoublePerturbation)
+export(doublePerturbationGrob)
+export(grid.doublePerturbation)
+export(postDrawDetails.doublePerturbation)
+
+export(plotHeatmap)
+export(grid.sgiHeatmap)
+
+# HTML report
+export(startReport, endReport)
+export(reportAnnotation)
+export(reportDoublePerturbation)
+export(reportGeneLists)
+export(reportHeatmap)
+export(reportMainEffects)
+export(reportNetworks)
+export(reportScreenData)
+export(reportStatistics)
+
+# Waiting for export
+
+## export(getCellHTSObject)
+## export(sgisubsetQueryDesign)
+## export(plotIndDesignScatter)
+## export(plotMainEffects)
+## export(plotReplicateScatter)
+## export(plotScatterErrorbars)
+## export(plotScreenData)
+## export(getTransformation)
+## export(getInvTransformation)
+
+## export(ordertree)
+## export(swaptree)
+
+## export(zPrime)
+
+## export(grid.sgiColorkey)
+## export(grid.sgiDendrogram)

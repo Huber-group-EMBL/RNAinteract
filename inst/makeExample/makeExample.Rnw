@@ -1,0 +1,106 @@
+%\VignetteIndexEntry{RNAinteract}
+%\VignetteKeywords{synthetic genetic interactions}
+%\VignettePackage{RNAinteract}
+
+\documentclass[10pt,a4paper]{article}
+
+\RequirePackage{amsfonts,amsmath,amstext,amssymb,amscd}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0.2,0.0,0.4}
+
+\topmargin -1.5cm
+\oddsidemargin -0cm   % read Lamport p.163
+\evensidemargin -0cm  % same as oddsidemargin but for left-hand pages
+\textwidth 17cm
+\textheight 24.5cm
+\parindent0em
+
+\newcommand{\lib}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\file}[1]{{\mbox{\normalfont\textsf{'#1'}}}}
+\newcommand{\R}{{\mbox{\normalfont\textsf{R}}}}
+\newcommand{\Rfunction}[1]{{\mbox{\normalfont\texttt{#1}}}}
+\newcommand{\Robject}[1]{{\mbox{\normalfont\texttt{#1}}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\Rclass}[1]{{\mbox{\normalfont\textit{#1}}}}
+\newcommand{\code}[1]{{\mbox{\normalfont\texttt{#1}}}}
+
+\newcommand{\email}[1]{\mbox{\href{mailto:#1}{\textcolor{darkblue}{\normalfont{#1}}}}}
+\newcommand{\web}[2]{\mbox{\href{#2}{\textcolor{darkblue}{\normalfont{#1}}}}}
+
+\SweaveOpts{keep.source=TRUE,eps=FALSE}
+
+\begin{document}
+
+\title{Analysis of Pairwise Interaction Screens}
+
+\author{Bernd Fischer}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+The package contains an analysis pipeline for data from quantitative interaction screens. The package is the basis for the analysis of an RNAi interaction screen reported in Horn, Sandmann, Fischer, et al., Mapping of Signalling Networks through Synthetic Genetic Interaction Analysis by RNAi, Nature Methods, 2011. This package provides the software that implements the methods used in this paper; these methods are further described in the Supplemental Methods section of the paper.
+
+\section{Creating an RNAinteract object}
+The package \Rpackage{RNAinteract} is loaded by the following command.
+
+<<library,results=hide>>=
+library("RNAinteract")
+@
+
+In the package included is an example for a small genetic interaction screen. Text files containing a description of the design of the screen and the screen data are located in the following directory.
+
+<<inputpath, results=hide>>=
+inputpath = system.file("RNAinteractExample",package="RNAinteract")
+inputpath
+@
+
+The data and annotation are loaded and an \Rclass{RNAinteract} object is created with the following command.
+
+<<create RNAinteract>>=
+sgi = createRNAinteractFromFiles(name="RNAi interaction screen", path = inputpath)
+sgi
+@
+
+Multiple pairwise interaction screens with the same annotation can be stored in one \Rclass{RNAinteract} object, e.g. if the screen is replicated or if the screen is repeated under multiple conditions. Here, the object \code{sgi} contains two replicate screens. Multiple readout channels can be captured in the same object as well. In this case we have three channels.
+<<channelnames>>=
+getChannelNames(sgi)
+@
+
+\section{Single Perturbation effects and pairwise interactions}
+The functions for manipulating the \Rclass{RNAinteract} object are working as follows: the \Rclass{RNAinteract}-object is given as the first argument of each function. The function performs some calculations and stores the result again in the object that is returned by the functions.
+
+First, the single perturbation effects (called main effects) are estimated from the data. For each template position and for each query reagent a main effect is estimated.
+
+<<main effects>>=
+sgi <- estimateMainEffect(sgi, use.query="Ctrl_Fluc")
+@
+If the main effects contain time or plate dependent trends, these can be adjusted and removed ("normalized"). The normalization of the main effects does not influence the subsequent estimation of the pairwise interactions, but it makes the main effects better comparable between replicates and different screens.
+
+When the main effects are available, the pairwise interaction term can be estimated.
+
+<<pairwise interaction term>>=
+sgi <- computePI(sgi)
+@
+
+The p-values are computed by
+
+<<compute p-values>>=
+sgi <- computePValues(sgi)
+save(sgi, file=file.path("..", "..", "data", "sgi.rda"))
+@
+independently for each screen and each channel. 
+
+
+\section{Session Info}
+<<sessioninfo>>=
+sessionInfo()
+@
+
+\end{document}
+
+

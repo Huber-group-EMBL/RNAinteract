@@ -1,0 +1,30 @@
+TID	Symbol	group	GID	AnnotationSymbol	Name
+FBgn0000229	bsk	sample	FBgn0000229	CG5680	basket
+FBgn0001291	Jra	sample	FBgn0001291	CG2275	Jun-related antigen
+FBgn0001297	kay	sample	FBgn0001297	CG33956	kayak
+FBgn0001965	Sos	sample	FBgn0001965	CG7793	Son of sevenless
+FBgn0003177	pyd	sample	FBgn0003177	CG31349	polychaetoid
+FBgn0003205	Ras85D	sample	FBgn0003205	CG9375	Ras oncogene at 85D
+FBgn0003502	Btk29A	sample	FBgn0003502	CG8049	Btk family kinase at 29A
+FBgn0004390	Gap1	sample	FBgn0004390	CG6721	GTPase-activating protein 1
+FBgn0010269	Dsor1	sample	FBgn0010269	CG15793	Downstream of raf1
+FBgn0010909	msn	sample	FBgn0010909	CG16973	misshapen
+FBgn0014020	Rho1	sample	FBgn0014020	CG8416	Rho1
+FBgn0015295	shark	sample	FBgn0015295	CG18247	Src homology 2, ankyrin repeat, tyrosine kinase
+FBgn0021873	Gef26	sample	FBgn0021873	CG9491	Gef26
+FBgn0024326	Mkk4	sample	FBgn0024326	CG9738	MAP kinase kinase 4
+FBgn0025743	mbt	sample	FBgn0025743	CG18582	mushroom bodies tiny
+FBgn0026252	msk	sample	FBgn0026252	CG7935	moleskin
+FBgn0032006	Pvr	sample	FBgn0032006	CG8222	PDGF- and VEGF-receptor related
+FBgn0033153	Gadd45	sample	FBgn0033153	CG11086	Gadd45
+FBgn0044323	Cka	sample	FBgn0044323	CG7392	Connector of kinase to AP-1
+Ctrl_Fluc	Ctrl_Fluc	neg	Ctrl_Fluc	Fluc	Fluc_1
+FBgn0003138	Ptp61F	sample	FBgn0003138	CG9181	Protein tyrosine phosphatase 61F
+FBgn0027515	CG7115	sample	FBgn0027515	CG7115	CG7115
+FBgn0029958	Pdp	sample	FBgn0029958	CG12151	Pyruvate dehydrogenase phosphatase
+FBgn0030761	CG9784	sample	FBgn0030761	CG9784	CG9784
+FBgn0031952	cdc14	sample	FBgn0031952	CG7134	cdc14
+FBgn0034691	synj	sample	FBgn0034691	CG6562	synaptojanin
+FBgn0036369	CG10089	sample	FBgn0036369	CG10089	CG10089
+FBgn0003256	rl	sample	FBgn0003256	rl	rl
+Ctrl_th_2	Ctrl_th_2	pos	Ctrl_th_2	CG12284	th_2

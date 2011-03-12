@@ -1,0 +1,279 @@
+%\VignetteIndexEntry{RNAinteract}
+%\VignetteKeywords{synthetic genetic interactions}
+%\VignettePackage{RNAinteract}
+
+\documentclass[10pt,a4paper]{article}
+
+\RequirePackage{amsfonts,amsmath,amstext,amssymb,amscd}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0.2,0.0,0.4}
+
+\topmargin -1.5cm
+\oddsidemargin -0cm   % read Lamport p.163
+\evensidemargin -0cm  % same as oddsidemargin but for left-hand pages
+\textwidth 17cm
+\textheight 24.5cm
+\parindent0em
+
+\newcommand{\lib}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\file}[1]{{\mbox{\normalfont\textsf{'#1'}}}}
+\newcommand{\R}{{\mbox{\normalfont\textsf{R}}}}
+\newcommand{\Rfunction}[1]{{\mbox{\normalfont\texttt{#1}}}}
+\newcommand{\Robject}[1]{{\mbox{\normalfont\texttt{#1}}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\Rclass}[1]{{\mbox{\normalfont\textit{#1}}}}
+\newcommand{\code}[1]{{\mbox{\normalfont\texttt{#1}}}}
+
+\newcommand{\email}[1]{\mbox{\href{mailto:#1}{\textcolor{darkblue}{\normalfont{#1}}}}}
+\newcommand{\web}[2]{\mbox{\href{#2}{\textcolor{darkblue}{\normalfont{#1}}}}}
+
+\SweaveOpts{keep.source=TRUE,eps=FALSE}
+
+\begin{document}
+
+\title{Analysis of Pairwise Interaction Screens}
+
+\author{Bernd Fischer}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+The package contains an analysis pipeline for data from quantitative interaction screens. The package is the basis for the analysis of an RNAi interaction screen reported in Horn, Sandmann, Fischer, et al., Mapping of Signalling Networks through Synthetic Genetic Interaction Analysis by RNAi, Nature Methods, 2011. This package provides the software that implements the methods used in this paper; these methods are further described in the Supplemental Methods section of the paper.
+
+\section{Installation of the RNAinteract package}
+To install the package \Rpackage{RNAinteract}, you need a running version of \R~(www.r-project.org, version $\geq 2.13.0$). After installing \R~you can run the following commands from the \R~command shell to install \Rpackage{RNAinteract} and all required packages.
+
+<<installation,eval=FALSE>>=
+source("http://bioconductor.org/biocLite.R")
+biocLite("RNAinteract")
+@
+
+\section{Creating an RNAinteract object}
+The package \Rpackage{RNAinteract} is loaded by the following command.
+
+<<library,results=hide>>=
+library("RNAinteract")
+@
+
+In the package included is an example for a small genetic interaction screen. Text files containing a description of the design of the screen and the screen data are located in the following directory.
+
+<<inputpath, results=hide>>=
+inputpath = system.file("RNAinteractExample",package="RNAinteract")
+inputpath
+@
+
+The directory \code{inputpath} contains five text files:
+
+\code{Targets.txt}, \code{Reagents.txt}, \code{TemplateDesign.txt}, \code{QueryDesign.txt}, \code{Platelist.txt}.
+
+Open these files in a text editor to inspect the file format. 
+
+The first file (\code{Targets.txt}) contains information about the targeted genes. The three columns \code{TID}, \code{Symbol}, and \code{group} are required. Optionally other columns can be added. \code{TID} is a unique identifier for the target gene. Preferably, this is the ENSEMBL gene identifier or the identifier of another reference database. A short, human-readable gene name is provided in the column \code{Symbol}. The column \code{group} should contain a grouping of the genes into {\it sample} genes, negative ({\it neg}), or positive ({\it pos}) controls. The grouping is used later on, in quality control plots, or in displays such as the heatmap where the control data need to be omitted.
+
+<<File: Targets>>=
+inputfile <- system.file("RNAinteractExample/Targets.txt",package="RNAinteract")
+T <- read.table(inputfile, sep="\t", stringsAsFactors=FALSE, header=TRUE)
+head(T)
+@ 
+
+The file \code{Reagents.txt} contains the $n:1$ mapping of reagents to target genes. In the example screen each gene is targeted by two independet dsRNA designs. The mandatory columns are \code{RID} (a unique identifier of the ragent) and \code{TID} (the target gene identifier as defined in the file \code{Targets}). Optionally, additional columns such as RNA sequences can be added. 
+
+<<File: Reagents>>=
+inputfile <- system.file("RNAinteractExample/Reagents.txt",package="RNAinteract")
+T <- read.table(inputfile, sep="\t", stringsAsFactors=FALSE, header=TRUE)
+head(T[,c("RID", "TID", "PrimerSeqFor","PrimerSeqRev","Length")])
+@ 
+
+The screen design is assumed to be a template-query design. A template plate contains in each well a different reagent. There may be multiple template plates to cover the whole set of reagents. Afterwards one query reagent will be added to each well on the template plates. By this strategy a matrix of double RNAi treatments is obtained. One can either choose to screen all selected genes against all selected genes, or some number of template genes against another number of query genes. The file \code{TemplateDesign.txt} contains information about the template plate design. \code{TemplatePlate} is the number of the template plate. Numbering starts with 1. In the example there is only one template plate; in other applications, there may be multiple template plates. \code{Well} is a single letter followed by a number and identifies the well coordinates within the plates. \code{RID} defines the reagent in the respective well with the same identifier as in the file \code{Reagents.txt}. In the example screen there are 48 different template reagents. These span the left hand side of the multiwell plate. The right hand side is filled with the same reagents and will be covered with a different query reagent from the left hand side. To distinguish which query is spotted on each well the last column \code{QueryNr} denotes the number of the query. In the example the left hand side gets the query number 1, the right hand side gets the query number 2.
+
+<<File: TemplateDesign>>=
+inputfile <- system.file("RNAinteractExample/TemplateDesign.txt",package="RNAinteract")
+T <- read.table(inputfile, sep="\t", stringsAsFactors=FALSE, header=TRUE)
+head(T)
+@ 
+
+The file \code{QueryDesign.txt} specifies the query genes on each physical plate in the screen design. The plates are numbered starting from 1. In the example there are two different query reagents on the same physical plate: One on the left half of the plate and one on the right half of the plate. 
+
+<<File: QueryDesign>>=
+inputfile <- system.file("RNAinteractExample/QueryDesign.txt",package="RNAinteract")
+T <- read.table(inputfile, sep="\t", stringsAsFactors=FALSE, header=TRUE)
+head(T)
+@ 
+
+In many cases a screen is repeated (as technical or biological replicates) or it is conducted under multiple conditions (e.g. with an additional drug). In the following, we will refer to either replicates or different conditions as screens. Furthermore the plates are usually numbered with a platebarcode. The file \code{Platelist.txt} shows in which file the readout data is stored (column \code{Filename}), and which \code{Platebarcode} is associated with which \code{Plate} as defined in the query design and which replicate it represents.
+
+<<File: Platelist>>=
+inputfile <- system.file("RNAinteractExample/Platelist.txt",package="RNAinteract")
+T <- read.table(inputfile, sep="\t", stringsAsFactors=FALSE, header=TRUE)
+head(T)
+@ 
+
+The platelist in the example says that the data is distributed in two files. The first file is shown below. Beside the mandatory columns \code{Platebarcode} and \code{Well} there is a column for  each quantitative value (readout channel) that is measured within each well.
+
+<<File: DataRNAinteractExample_1>>=
+inputfile <- system.file("RNAinteractExample/DataRNAinteractExample_1.txt",package="RNAinteract")
+T <- read.table(inputfile, sep="\t", stringsAsFactors=FALSE, header=TRUE)
+@ 
+
+The data and annotation are loaded and an \Rclass{RNAinteract} object is created with the following command.
+
+<<create RNAinteract>>=
+sgi = createRNAinteractFromFiles(name="RNAi interaction screen", path = inputpath)
+sgi
+@
+
+Multiple pairwise interaction screens with the same annotation can be stored in one \Rclass{RNAinteract} object, e.g. if the screen is replicated or if the screen is repeated under multiple conditions. Here, the object \code{sgi} contains two replicate screens. Multiple readout channels can be captured in the same object as well. In this case we have three channels.
+<<channelnames>>=
+getChannelNames(sgi)
+@
+
+\section{Single Perturbation effects and pairwise interactions}
+The functions for manipulating the \Rclass{RNAinteract} object are working as follows: the \Rclass{RNAinteract}-object is given as the first argument of each function. The function performs some calculations and stores the result again in the object that is returned by the functions.
+
+First, the single perturbation effects (called main effects) are estimated from the data. For each template position and for each query reagent a main effect is estimated.
+
+<<main effects>>=
+sgi <- estimateMainEffect(sgi, use.query="Ctrl_Fluc")
+@
+If the main effects contain time or plate dependent trends, these can be adjusted and removed ("normalized"). The normalization of the main effects does not influence the subsequent estimation of the pairwise interactions, but it makes the main effects better comparable between replicates and different screens.
+
+When the main effects are available, the pairwise interaction term can be estimated.
+
+<<pairwise interaction term>>=
+sgi <- computePI(sgi)
+@
+
+The object \code{sgi} contains two replicate screens. We summarize these two screens by taking the mean value for each measurement and add the mean screen as a new screen to the original screen. 
+
+<<summarize and combine screens>>=
+sgim <- summarizeScreens(sgi, screens=c("1","2"))
+sgi3 <- bindscreens(sgi, sgim)
+@
+
+The p-values are computed by
+
+% sgi3T2 <- computePValues(sgi3, method="HotellingT2")
+<<compute p-values>>=
+sgi3 <- computePValues(sgi3)
+sgi3limma <- computePValues(sgi3, method="limma")
+sgi3T2 <- computePValues(sgi3, method="HotellingT2")
+@
+
+independently for each screen and each channel. The genetic interaction scores for each gene pair are tested against the null-hypothesis that the interaction term is zero. It is a two sided test. For \code{sgi3}, a conservatie test is used, that regularizes the variance term in the t-statistic by taking the maximum of the empirical variance per gene pair, and a global value obtained from a pooled within-group variance across all data. p-values are derived from a t-statistics with n-1 degrees of freedom. \code{sgi3limma} contains p-values derived by limma (See \R-package \Rpackage{limma}). \Rpackage{limma} uses a more gradual moderation between the local and the global variance estimate. The object \code{sgi3T2} will contain p-values derived from a Hotelling $T^2$ test, where the deviation from the non-interactiong model is tested in a multivariate manner in all channel dimensions.
+
+\section{Data Access}
+
+The main function for data access is \code{getData}. The raw data can be accessed in different formats. The code below shows the access of the raw data in plain format, in plate layout, and as a matrix of genes. Usually the data stored in the RNAinteract object is log-transformed. Therefore the inverse transformation has to be applied to obtain the raw input data.
+
+<<data-access-raw-data, fig=TRUE>>=
+data("sgi")
+
+D <- getData(sgi, type="data", do.inv.trafo = TRUE)
+Dplatelayout <- getData(sgi, type="data", 
+	     format="platelist", do.inv.trafo = TRUE)
+splots::plotScreen(Dplatelayout[["1"]][["nrCells"]],
+	     nx=sgi@pdim[2], ny=sgi@pdim[1], ncol=3)
+Dmatrix <- getData(sgi, type="data", 
+	     format="targetMatrix", do.inv.trafo = TRUE)
+@
+
+One can access the raw data of a single screen or single readout channel.
+<<data-access raw data of a single screen>>=
+data("sgi")
+D <- getData(sgi, screen="2", channel="nrCells", 
+             type="data", do.inv.trafo = TRUE, format="targetMatrix")
+@ 
+
+The main effects can be accessed in the same way and displayed in plate layout. In this case the main effects are returned in a log-transformed way.
+<<data-access-main-effects, fig=TRUE>>=
+Mplatelayout <- getData(sgi, type="main", design="template", 
+	     screen="1", channel="nrCells", format="platelist")
+splots::plotScreen(Mplatelayout, nx=sgi@pdim[2], ny=sgi@pdim[1],
+	     ncol=3)
+@
+
+The expected values from the non-interacting model, pairwise interaction scores, p-values and q-values can be accessed in the same way. p- and q-values can not be accessed in plain format or plate layout format, because they are not values of a single experiment.
+<<data-access-pi, fig=TRUE>>= 
+NImatrix <- getData(sgi, type="ni.model", format="targetMatrix")
+PImatrix <- getData(sgi, type="pi", format="targetMatrix")
+PIplatelayout <- getData(sgi, type="main", design="query",
+	     screen="1", channel="nrCells", format="platelist")
+splots::plotScreen(PIplatelayout, nx=sgi@pdim[2], ny=sgi@pdim[1],
+             ncol=3)
+
+p.value <- getData(sgi, type="p.value", format="targetMatrix")
+q.value <- getData(sgi, type="q.value", format="targetMatrix")
+@
+
+\section{Graphical Output}
+
+A heatmap is plotted with negative interactions colored blue and positive interactions colored yellow. To display the heatmap, one has to select the screen and the channel to be displayed.
+ 
+<<heatmaps, fig=TRUE>>=
+plotHeatmap(sgi, screen="1", channel="nrCells")
+@ 
+
+A double RNAi plot shows the interaction profile for one gene. Each dot corresponds to one gene pair containing the selected query gene (Ras85D) and one other gene. The x-axis depicts the single RNAi effect of the other gene. The y-axis shows the double RNAi effect of the gene pair. If the gene pair is not interacting, the dot lies on the orange, diagonal line. If the double RNAi effect is equal to the single RNAi effect of one of the genes (Epistasis), the dot lies on one of the blue lines. 
+
+<<doubleRNAi, fig=TRUE, results=hide>>=
+plotDoublePerturbation(sgi, screen="1", channel="nrCells", target="Ras85D")
+@ 
+
+\section{A HTML-report}
+To generate a HTML report, first, the \code{outputpath} has to be defined. With \code{startReport} a HTML-page is opened for writing. The function returns a report object \code{report}. This object is handed over to the report functions. In the following example, the annotation (\code{reportAnnotation}) is written to the HTML-file, then a hit list for the pooled variance t-test (\code{reportGeneLists(sgi3, ...)}) and the limma t-test (\code{reportGeneLists(sgi3limma, ...)}) is added. 
+
+<<simple report, results=hide>>=
+outputpath = "RNAinteractHTML"
+report = startReport(outputpath)
+reportAnnotation(sgi3, path = outputpath, report = report)
+reportStatistics(sgi3, path = outputpath, report = report)
+reportGeneLists(sgi3, path = outputpath, report = report)
+reportGeneLists(sgi3limma, path = outputpath, dir="hitlistlimma",
+                prefix = "hitlistlimma", report = report)
+@ 
+
+For further quality control, we compare the estimated main effects by scatter plots. To check for plate and edge effects in the screen we generate screen plots for the input data as well as for the estimated pairwise interactions.
+
+<<screen plots, results=hide>>=
+reportMainEffects(sgi3, path = outputpath, report = report)
+reportScreenData(sgi3, plotScreen.args=list(ncol=3L, do.legend=TRUE,
+                                               fill = c("red","white","blue")),
+                 path = outputpath, report = report)
+@ 
+
+Double perturbation plots are generated for each gene, each screen, and each channel to observe the genetic interaction profile of a single gene. 
+
+<<double perturbation plot, results=hide>>=
+reportDoublePerturbation(sgi3, path = outputpath, report = report,show.labels="p.value")
+@ 
+
+For each screen and each channel a heatmap is added to the report by
+<<heatmaps, results=hide>>=
+reportHeatmap(sgi, path=outputpath, report=report)
+@
+
+The report is closed by a call to \code{endReport}. 
+
+<<endReport>>=
+save(sgi, file=file.path(outputpath, "RNAinteractExample.rda"))
+endReport(report)
+@ 
+Finally the report can be opened in a browser.
+
+<<browseURL, eval=FALSE>>=
+browseURL(file.path(outputpath, "index.html"))
+@
+
+\section{Session Info}
+<<sessioninfo>>=
+sessionInfo()
+@
+
+\end{document}
+
+
