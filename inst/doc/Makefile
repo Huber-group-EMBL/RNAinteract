@@ -2,7 +2,7 @@ all: RNAinteract clean
 
 RNAinteract: RNAinteract.tex
 	texi2dvi --pdf RNAinteract.tex
-	R CMD Stangle RNAinteract.Rnw
+	$(R_HOME)/bin/R CMD Stangle RNAinteract.Rnw
 
 clean:
 	-$(RM) -rf RNAinteractHTML

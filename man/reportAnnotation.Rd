@@ -91,7 +91,7 @@ data("sgi")
 report = startReport("report")
 reportAnnotation(sgi, report = report)
 endReport(report)
-browseURL(file.path("report","index.html"))
+# browseURL(file.path("report","index.html"))
 }
 \keyword{ print }
 
