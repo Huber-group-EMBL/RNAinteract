@@ -53,6 +53,11 @@ source("http://bioconductor.org/biocLite.R")
 biocLite("RNAinteract")
 @
 
+The R code of this vignette can be accessed in the Sweave file \code{RNAinteract.Rnw}. The R code is extracted from the Sweave file and written to a file \code{RNAinteract.R} by
+<<sourecode, eval=FALSE>>=
+Stangle(system.file("doc", "RNAinteract.Rnw", package="RNAinteract"))
+@ 
+
 \section{Creating an RNAinteract object}
 The package \Rpackage{RNAinteract} is loaded by the following command.
 
