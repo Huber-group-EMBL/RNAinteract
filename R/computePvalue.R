@@ -40,7 +40,7 @@ computePValues <- function (sgi, method = "pooled.ttest", mixTemplateQuery = TRU
           for (c in 1:sgi@C) {
             X[,c] = PI[I,s,c]
           }
-          try( { 
+          try( {
             p.value[i] = HotellingsT2(X)$p.value
           }, silent = TRUE )
         }

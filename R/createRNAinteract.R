@@ -96,12 +96,16 @@ createRNAinteractFromFiles <- function(name="anonymous",
   chts <- createCellHTSFromFiles(name=name, filePlatelist = filePlatelist, path = path, pdim = pdim)
 
   Reagents       <- read.table(sprintf("%s/%s",path,fileReagents),
+                               comment.char="", quote="",
                                header=TRUE, sep="\t",stringsAsFactors=FALSE)
   Targets        <- read.table(sprintf("%s/%s",path,fileTargets),
+                               comment.char="", quote="",
                                header=TRUE, sep="\t",stringsAsFactors=FALSE)
   TemplateDesign <- read.table(sprintf("%s/%s",path,fileTemplateDesign),
+                               comment.char="", quote="",
                                header=TRUE, sep="\t",stringsAsFactors=FALSE)
   QueryDesign    <- read.table(sprintf("%s/%s",path,fileQueryDesign),
+                               comment.char="", quote="",
                                header=TRUE, sep="\t",stringsAsFactors=FALSE)
 
   return(createRNAinteract(Data(chts), well(chts), plate(chts), pdim(chts), Reagents, Targets, TemplateDesign, QueryDesign, Transformation = Transformation))
