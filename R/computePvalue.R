@@ -1,5 +1,5 @@
 
-computePValues <- function (sgi, method = "pooled.ttest", mixTemplateQuery = TRUE, verbose = 0) {
+computePValues <- function (sgi, method = "pooled.ttest", mixTemplateQuery = TRUE, p.adjust.function = function(x) { p.adjust(x, method="BH") }, verbose = 0) {
   stopifnot( is( sgi, "RNAinteract" ) )
   if (verbose > 0) {
     time1 <- Sys.time()
@@ -48,10 +48,11 @@ computePValues <- function (sgi, method = "pooled.ttest", mixTemplateQuery = TRU
       for (c in 1:sgi@C) {
         sgi@p.value[,,s,c] <- p.value[ID]
       }
-      I = which(is.finite(p.value))
-      qjob = qvalue(p.value[I])
-      q.value = rep(NA,length(p.value))
-      q.value[I] = qjob$qvalues
+      ## I = which(is.finite(p.value))
+      ## qjob = p.adjust.function(p.value[I])
+      ## q.value = rep(NA,length(p.value))
+      ## q.value[I] = qjob$qvalues
+      q.value = p.adjust.function(p.value)
       for (c in 1:sgi@C) {
         sgi@q.value[,,s,c] <- q.value[ID]
       }
@@ -84,10 +85,11 @@ computePValues <- function (sgi, method = "pooled.ttest", mixTemplateQuery = TRU
           p.value <- fit$p.value
         }
         sgi@p.value[,,s,c] <- p.value[ID]
-        I = which(is.finite(p.value))
-        qjob = qvalue(p.value[I])
-        q.value = rep(NA,length(p.value))
-        q.value[I] = qjob$qvalues
+        ## I = which(is.finite(p.value))
+        ## qjob = qvalue(p.value[I])
+        ## q.value = rep(NA,length(p.value))
+        ## q.value[I] = qjob$qvalues
+        q.value = p.adjust.function(p.value)
         sgi@q.value[,,s,c] <- q.value[ID]
       }
     }
