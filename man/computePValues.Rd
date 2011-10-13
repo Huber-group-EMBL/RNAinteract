@@ -7,7 +7,11 @@ compute p-values
 Compute p-values for genetic interactions terms. Assess if genetic interaction term is different from zero.
 }
 \usage{
-computePValues(sgi, method = "pooled.ttest", mixTemplateQuery = TRUE, verbose = 0)
+computePValues(sgi,
+               method = "pooled.ttest",
+               mixTemplateQuery = TRUE,
+               p.adjust.function = function(x) { p.adjust(x, method = "BH")},
+               verbose = 0)
 }
 \arguments{
   \item{sgi}{
@@ -24,6 +28,9 @@ computePValues(sgi, method = "pooled.ttest", mixTemplateQuery = TRUE, verbose = 
   \item{mixTemplateQuery}{
   If a gene-pair is measured twice as template-query and as query-template, a single p-value is computed by combining all measurements, if \code{mixTemplateQuery =  TRUE}.
   Else a p-value is computed independently for both cases.
+}
+  \item{p.adjust.function}{
+  A function that corrects the p-values for multiple testing. Default method is the Benjamini-Hochberg method.
 }
   \item{verbose}{Either 0 (default, no output), 1 (minimum output), or 2 (outout)}
 }
