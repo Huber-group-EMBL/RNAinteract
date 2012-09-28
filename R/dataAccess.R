@@ -163,7 +163,7 @@ getData <- function(sgi,
       for (c in use.channels) {
         platelist[[s]][[c]] <- list()
         for (p in 1:P) {
-##           platelist[[s]][[c]][[p]] <- matrix(d[sgi@plate == p,s,c],nr=sgi@pdim[1],nc=sgi@pdim[2])
+##           platelist[[s]][[c]][[p]] <- matrix(d[sgi@plate == p,s,c],nrow=sgi@pdim[1],ncol=sgi@pdim[2])
           platelist[[s]][[c]][[p]] <- D[sgi@plate == p,s,c]
 ##           dim(platelist[[s]][[c]][[p]]) <- sgi@pdim
         }
@@ -201,7 +201,7 @@ getData <- function(sgi,
                    screen = use.screens, channel = use.channels))
     for (s in 1:S) {
       for (c in 1:C) {
-        X = matrix(NA,nr=maxid,nc=maxn)
+        X = matrix(NA,nrow=maxid,ncol=maxn)
         ## pi = PI[,s,c]
         id2 = id
         for (i in 1:maxn) {

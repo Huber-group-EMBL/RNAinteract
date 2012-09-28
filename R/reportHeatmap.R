@@ -35,7 +35,7 @@ reportHeatmap <- function(sgi, verbose = 0, path = ".", dir = "heatmap", prefix 
       PI <- getData(sgi, type="pi", format="targetMatrix",screen=s,channel=c, withoutgroups=withoutgroups)
       fn.png = sprintf("%s/%s/%s-%s-%s.png", path, dir, prefix, s, c)
       fn.pdf = sprintf("%s/%s/%s-%s-%s.pdf", path, dir, prefix, s, c)
-      png(width=png.args$width,height=png.args$height, file=fn.png)
+      png(width=png.args$width,height=png.args$height, filename=fn.png)
       grid.sgiHeatmap(PI)
       dev.off()
       pdf(width=png.args$width,height=png.args$height, file=fn.pdf)

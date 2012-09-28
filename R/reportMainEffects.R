@@ -157,7 +157,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
           for (j in (i+1):length(IQ)) {
             fn.png <- sprintf("%s/%s/%s-template-%s-%s-%d-%d.png", path, dir, prefix, s, c, IQ[i], IQ[j])
             fn.pdf <- sprintf("%s/%s/%s-template-%s-%s-%d-%d.pdf", path, dir, prefix, s, c, IQ[i], IQ[j])
-            png(width=png.args$width, height=png.args$height, file=fn.png)
+            png(width=png.args$width, height=png.args$height, filename=fn.png)
             plotMainEffects(sgi, screen=s, channel=c, design="template", QueryNr=c(IQ[i],IQ[j]), plot.args=plot.args, controls=controls)
             dev.off()
             pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf)
@@ -172,7 +172,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
         hwrite("<h3>Main Effects of Template Reagents</h3>",table=FALSE,br=FALSE,page=p)
         hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
         hwrite("The main effect of the template reagent of different copies on the template plates are compared to each other. If a normalization of the time effect is performed, then the normalized main effects are plotted.",table=FALSE,br=TRUE,page=p)
-        Img <- hwriteImage(matrix(fn2.png,nr=length(fn2.png),nc=1),table=FALSE)
+        Img <- hwriteImage(matrix(fn2.png,nrow=length(fn2.png),ncol=1),table=FALSE)
         row.names(Img) <- QN
         hwrite(Img,link=fn2.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
       }
@@ -185,7 +185,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
           for (j in (i+1):length(IT)) {
             fn.png <- sprintf("%s/%s/%s-query-%s-%s-%d-%d.png", path, dir, prefix, s, c, IT[i], IT[j])
             fn.pdf <- sprintf("%s/%s/%s-query-%s-%s-%d-%d.pdf", path, dir, prefix, s, c, IT[i], IT[j])
-            png(width=png.args$width, height=png.args$height, file=fn.png)
+            png(width=png.args$width, height=png.args$height, filename=fn.png)
             plotMainEffects(sgi, screen=s, channel=c, design="query", TemplatePlate=c(IT[i],IT[j]), plot.args=plot.args, controls=controls)
             dev.off()
             pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf)
@@ -200,7 +200,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
         hwrite("<h3>Main Effects of Query Reagents</h3>",table=FALSE,br=FALSE,page=p)
         hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
         hwrite("The main effect of the query reagent on different template plates are compared to each other. If a normalization of the time effect is performed, then the normalized main effects are plotted.",table=FALSE,br=TRUE,page=p)
-        Img <- hwriteImage(matrix(fn2.png,nr=length(fn2.png),nc=1),table=FALSE)
+        Img <- hwriteImage(matrix(fn2.png,nrow=length(fn2.png),ncol=1),table=FALSE)
         row.names(Img) <- QN
         hwrite(Img,link=fn2.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
       }
@@ -212,7 +212,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
         for (j in 1:length(IQ)) {
           fn.png <- sprintf("%s/%s/%s-templatequery-%s-%s-%d-%d.png", path, dir, prefix, s, c, IT[i], IQ[j])
           fn.pdf <- sprintf("%s/%s/%s-templatequery-%s-%s-%d-%d.pdf", path, dir, prefix, s, c, IT[i], IQ[j])
-          png(width=png.args$width, height=png.args$height, file=fn.png)
+          png(width=png.args$width, height=png.args$height, filename=fn.png)
           plotMainEffects(sgi, screen=s, channel=c, design=c("template","query"), TemplatePlate=IT[i],QueryNr=IQ[j], plot.args=plot.args, controls=controls)
           dev.off()
           pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf)
@@ -227,7 +227,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       hwrite("<h3>Main Effects of Template compared to Query Reagents</h3>",table=FALSE,br=FALSE,page=p)
       hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
       hwrite("The main effect of the template reagents are compared to the main effect of the query reagents. If a normalization of the time effect is performed, then the normalized main effects are plotted.",table=FALSE,br=TRUE,page=p)
-      Img <- hwriteImage(matrix(fn2.png,nr=length(fn2.png),nc=1),table=FALSE)
+      Img <- hwriteImage(matrix(fn2.png,nrow=length(fn2.png),ncol=1),table=FALSE)
       row.names(Img) <- QN
       hwrite(Img,link=fn2.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
       
@@ -237,7 +237,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       for (i in 1:length(IQ)) {
         fn.png <- sprintf("%s/%s/%s-inddesigntemplate-%s-%s-%d.png", path, dir, prefix, s, c, IQ[i])
         fn.pdf <- sprintf("%s/%s/%s-inddesigntemplate-%s-%s-%d.pdf", path, dir, prefix, s, c, IQ[i])
-        png(width=png.args$width, height=png.args$height, file=fn.png)
+        png(width=png.args$width, height=png.args$height, filename=fn.png)
         plotMainEffects(sgi, screen=s, channel=c, design="template", QueryNr=IQ[i], plot.args=plot.args, controls=controls, compare.targets=TRUE)
         dev.off()
         pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf)
@@ -250,7 +250,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       hwrite("<h3>Template Main Effects of Independent Reagents</h3>",table=FALSE,br=FALSE,page=p)
       hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
       hwrite("The main effect of the template reagents are compared to each other. Each dot compares different reagents targeting the same target. If a normalization of the time effect is performed, then the normalized main effects are plotted.",table=FALSE,br=TRUE,page=p)
-      Img <- hwriteImage(matrix(fn2.png,nr=length(fn2.png),nc=1),table=FALSE)
+      Img <- hwriteImage(matrix(fn2.png,nrow=length(fn2.png),ncol=1),table=FALSE)
       row.names(Img) <- QN
       hwrite(Img,link=fn2.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
 
@@ -260,7 +260,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       for (i in 1:length(IT)) {
         fn.png <- sprintf("%s/%s/%s-inddesignquery-%s-%s-%d.png", path, dir, prefix, s, c, IT[i])
         fn.pdf <- sprintf("%s/%s/%s-inddesignquery-%s-%s-%d.pdf", path, dir, prefix, s, c, IT[i])
-        png(width=png.args$width, height=png.args$height, file=fn.png)
+        png(width=png.args$width, height=png.args$height, filename=fn.png)
         plotMainEffects(sgi, screen=s, channel=c, design="query", TemplatePlate=IT[i], plot.args=plot.args, controls=controls, compare.targets=TRUE)
         dev.off()
         pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf)
@@ -273,13 +273,13 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       hwrite("<h3>Query Main Effects of Independent Reagents</h3>",table=FALSE,br=FALSE,page=p)
       hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
       hwrite("The main effect of the query reagents are compared to each other. Each dot compares different reagents targeting the same target. If a normalization of the time effect is performed, then the normalized main effects are plotted.",table=FALSE,br=TRUE,page=p)
-      Img <- hwriteImage(matrix(fn2.png,nr=length(fn2.png),nc=1),table=FALSE)
+      Img <- hwriteImage(matrix(fn2.png,nrow=length(fn2.png),ncol=1),table=FALSE)
       row.names(Img) <- QN
       hwrite(Img,link=fn2.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
 
       fn.png <- sprintf("%s/%s/%s-timeeffect-%s-%s-%d.png", path, dir, prefix, s, c, IT[i])
       fn.pdf <- sprintf("%s/%s/%s-timeeffect-%s-%s-%d.pdf", path, dir, prefix, s, c, IT[i])
-      png(width=png.args$width, height=png.args$height, file=fn.png)
+      png(width=png.args$width, height=png.args$height, filename=fn.png)
       plot(sgi@mainQuery[,s,c],pch=20, main="Query Time Effect Normalization", xlab="time", ylab=sprintf("query main effect (ratio), unnormalized, (%s)", getScale(sgi, channel=c)))
       lines(sgi@mainTimeEffect[,s,c],col="red",lwd=3)
       dev.off()
@@ -292,14 +292,14 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       hwrite("<h3>Query Time Effect</h3>",table=FALSE,br=FALSE,page=p)
       hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
       hwrite("The main effect of the query reagents are plotted in time order.  If a normalization of the time effect is performed, then the red line shows the estimated time effect.",table=FALSE,br=TRUE,page=p)
-      Img <- hwriteImage(matrix(fn.png,nr=1,nc=1),table=FALSE)
+      Img <- hwriteImage(matrix(fn.png,nrow=1,ncol=1),table=FALSE)
 ##       row.names(Img) <- QN
       hwrite(Img,link=fn.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
 
       fn.png <- sprintf("%s/%s/%s-spatialeffectrow-%s-%s-%d.png", path, dir, prefix, s, c, IT[i])
       fn.pdf <- sprintf("%s/%s/%s-spatialeffectrow-%s-%s-%d.pdf", path, dir, prefix, s, c, IT[i])
       row = match(substr(sgi@templateDesign$Well,1,1),LETTERS)
-      png(width=png.args$width, height=png.args$height, file=fn.png)
+      png(width=png.args$width, height=png.args$height, filename=fn.png)
       plot(row,sgi@mainTemplate[,s,c],pch=20, main="Template Row Effect Normalization", xlab="row", ylab=sprintf("template main effect (ratio), unnormalized, (%s)", getScale(sgi, channel=c)))
       points(sgi@mainSpatialEffectRow[1,,s,c],col="red",pch=19)
       dev.off()
@@ -312,14 +312,14 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       hwrite("<h3>Template Row Effect</h3>",table=FALSE,br=FALSE,page=p)
       hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
       hwrite("The main effect of the template reagents are plotted in row order.  If a normalization of the spatial effect is performed, then the red points show the estimated row effect.",table=FALSE,br=TRUE,page=p)
-      Img <- hwriteImage(matrix(fn.png,nr=1,nc=1),table=FALSE)
+      Img <- hwriteImage(matrix(fn.png,nrow=1,ncol=1),table=FALSE)
 ##       row.names(Img) <- QN
       hwrite(Img,link=fn.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
 
       fn.png <- sprintf("%s/%s/%s-spatialeffectcol-%s-%s-%d.png", path, dir, prefix, s, c, IT[i])
       fn.pdf <- sprintf("%s/%s/%s-spatialeffectcol-%s-%s-%d.pdf", path, dir, prefix, s, c, IT[i])
       col = as.integer(substr(sgi@templateDesign$Well,2,3))
-      png(width=png.args$width, height=png.args$height, file=fn.png)
+      png(width=png.args$width, height=png.args$height, filename=fn.png)
       plot(col,sgi@mainTemplate[,s,c],pch=20, main="Template Column Effect Normalization", xlab="column", ylab=sprintf("template main effect (ratio), unnormalized, (%s)", getScale(sgi, channel=c)))
       points(sgi@mainSpatialEffectCol[1,,s,c],col="red",pch=19)
       dev.off()
@@ -332,7 +332,7 @@ reportMainEffects <- function(sgi, verbose = 0, path = ".", dir = "maineffects",
       hwrite("<h3>Template Column Effect</h3>",table=FALSE,br=FALSE,page=p)
       hwrite(sprintf("<b>(screen=%s; channel=%s)</b>", s, c),table=FALSE,br=TRUE,page=p)
       hwrite("The main effect of the template reagents are plotted in column order.  If a normalization of the spatial effect is performed, then the red points show the estimated column effect.",table=FALSE,br=TRUE,page=p)
-      Img <- hwriteImage(matrix(fn.png,nr=1,nc=1),table=FALSE)
+      Img <- hwriteImage(matrix(fn.png,nrow=1,ncol=1),table=FALSE)
 ##       row.names(Img) <- QN
       hwrite(Img,link=fn.pdf, cellpadding=3, cellspacing=0,border=1,br=TRUE,page=p)
       

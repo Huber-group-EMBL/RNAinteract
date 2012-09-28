@@ -81,16 +81,16 @@ reportScreenData <- function(sgi, type="data", design = "template", do.trafo = T
       }
       fn.png = sprintf("%s/%s/%s-%s-%s-%s.png", path, dir, prefix, prefix2, s, c)
       fn.pdf = sprintf("%s/%s/%s-%s-%s-%s.pdf", path, dir, prefix, prefix2, s, c)
-      png(width=png.args$width, height=png.args$height, file=fn.png)
+      png(width=png.args$width, height=png.args$height, filename=fn.png)
       plotScreenData(sgi, type = type, design = design, do.trafo = do.trafo, do.inv.trafo = do.inv.trafo, screen = s, channel = c,normalized=TRUE, plotScreen.args = plotScreen.args)
       dev.off()
-      pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf, maxRaster=1024)
+      pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf, maxRasters=1024)
       plotScreenData(sgi, type = type, design = design, do.trafo = do.trafo, do.inv.trafo = do.inv.trafo, screen = s, channel = c,normalized=TRUE, plotScreen.args = plotScreen.args)
       dev.off()
 
       fn.scatter.rep.png = sprintf("%s/%s/%s-repscatter-%s-%s-%s.png", path, dir, prefix, prefix2, s, c)
       fn.scatter.rep.pdf = sprintf("%s/%s/%s-repscatter-%s-%s-%s.pdf", path, dir, prefix, prefix2, s, c)
-      png(width=png.scatter.args$width, height=png.scatter.args$height, file=fn.scatter.rep.png)
+      png(width=png.scatter.args$width, height=png.scatter.args$height, filename=fn.scatter.rep.png)
       plotReplicateScatter(sgi, type = type, design = design, do.trafo = do.trafo, do.inv.trafo = do.inv.trafo, screen = s, channel = c,normalized=TRUE)
       dev.off()
       pdf(width=pdf.scatter.args$width, height=pdf.scatter.args$height, file=fn.scatter.rep.pdf)
@@ -99,7 +99,7 @@ reportScreenData <- function(sgi, type="data", design = "template", do.trafo = T
 
       fn.scatter.ind.png = sprintf("%s/%s/%s-indscatter-%s-%s-%s.png", path, dir, prefix, prefix2, s, c)
       fn.scatter.ind.pdf = sprintf("%s/%s/%s-indscatter-%s-%s-%s.pdf", path, dir, prefix, prefix2, s, c)
-      png(width=png.scatter.args$width, height=png.scatter.args$height, file=fn.scatter.ind.png)
+      png(width=png.scatter.args$width, height=png.scatter.args$height, filename=fn.scatter.ind.png)
       plotIndDesignScatter(sgi, type = type, design = design, do.trafo = do.trafo, do.inv.trafo = do.inv.trafo, screen = s, channel = c,normalized=TRUE)
       dev.off()
       pdf(width=pdf.scatter.args$width, height=pdf.scatter.args$height, file=fn.scatter.ind.pdf)

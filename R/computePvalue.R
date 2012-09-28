@@ -35,7 +35,7 @@ computePValues <- function (sgi, method = "pooled.ttest", mixTemplateQuery = TRU
         I = which(id == i)
         n = length(I)
         if (n >= sgi@C) {
-          X = matrix(NA,nr=n,nc=sgi@C)
+          X = matrix(NA,nrow=n,ncol=sgi@C)
           z=0
           for (c in 1:sgi@C) {
             X[,c] = PI[I,s,c]
@@ -60,7 +60,7 @@ computePValues <- function (sgi, method = "pooled.ttest", mixTemplateQuery = TRU
   } else {
     for (s in 1:sgi@S) {
       for (c in 1:sgi@C) {
-        X = matrix(NA,nr=maxid,nc=maxn)
+        X = matrix(NA,nrow=maxid,ncol=maxn)
         pi = PI[,s,c]
         id2 = id
         for (i in 1:maxn) {

@@ -141,7 +141,7 @@ normalizeMainEffectTemplate <- function(sgi, screen = NULL, channel = NULL) {
     for (c in use.channels) {
 
       TP = unique(sgi@templateDesign$TemplatePlate)
-      Mat = matrix(NA,nr=sgi@pdim[1],nc=sgi@pdim[2])
+      Mat = matrix(NA,nrow=sgi@pdim[1],ncol=sgi@pdim[2])
       row = match(substr(sgi@templateDesign$Well,1,1),LETTERS)
       col=as.integer(substr(sgi@templateDesign$Well,2,3))
       for (i in 1:length(TP)) {

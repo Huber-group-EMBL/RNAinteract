@@ -33,14 +33,14 @@ reportGeneLists <- function(sgi, verbose = 0, path = ".", dir = "hitlist", prefi
 
       q.value <- getData(sgi, screen = s, channel = c, type="q.value", format="targetMatrix")
       p.value <- getData(sgi, screen = s, channel = c, type="p.value", format="targetMatrix")
-      gene1 <- matrix(row.names(p.value),nr=dim(p.value)[1], nc=dim(p.value)[2])
-      gene2 <- matrix(colnames(p.value),nr=dim(p.value)[2], nc=dim(p.value)[1])
+      gene1 <- matrix(row.names(p.value),nrow=dim(p.value)[1], ncol=dim(p.value)[2])
+      gene2 <- matrix(colnames(p.value),nrow=dim(p.value)[2], ncol=dim(p.value)[1])
       gene2 <- t(gene2)
       ## maint <- getMain(sgi, design="template", screen=s, channel=c, summary="target")
       ## mainq <- getMain(sgi, design="query", screen=s, channel=c, summary="target")
       ## main = invtransform(sgi, 0.5 * (maint + mainq), channel=c)
-      ## main1 <- matrix(main,nr=dim(p.value)[1], nc=dim(p.value)[2])
-      ## main2 <- matrix(main,nr=dim(p.value)[2], nc=dim(p.value)[1])
+      ## main1 <- matrix(main,nrow=dim(p.value)[1], ncol=dim(p.value)[2])
+      ## main2 <- matrix(main,nrow=dim(p.value)[2], ncol=dim(p.value)[1])
       ## main2 <- t(main2)
       main1 <- getData(sgi, screen = s, channel = c, type="main", design="template", format="targetMatrix", do.inv.trafo=TRUE)
       main2 <- getData(sgi, screen = s, channel = c, type="main", design="query", format="targetMatrix", do.inv.trafo=TRUE)
@@ -58,15 +58,15 @@ reportGeneLists <- function(sgi, verbose = 0, path = ".", dir = "hitlist", prefi
       m <- m3 * max(m4) + m4
       dup = !duplicated(m)
       dup[m3 == m4] = FALSE
-      UT = matrix(dup,nr=nrow(p.value), nc=ncol(p.value))
+      UT = matrix(dup,nrow=nrow(p.value), ncol=ncol(p.value))
       GL <- data.frame(gene1 = gene1[UT],gene2 = gene2[UT],q.value = q.value[UT], p.value = p.value[UT],
                        main1 = main1[UT], main2 = main2[UT],
                        neg = getMainNeg(sgi, screen=s, channel=c, do.inv.trafo=TRUE),
                        NI = NI[UT], Measured = D[UT], pi = PI[UT])
 
       ## main.log = 0.5 * (maint + mainq)
-      ## main1.log <- matrix(main.log,nr=dim(p.value)[1], nc=dim(p.value)[2])
-      ## main2.log <- matrix(main.log,nr=dim(p.value)[2], nc=dim(p.value)[1])
+      ## main1.log <- matrix(main.log,nrow=dim(p.value)[1], ncol=dim(p.value)[2])
+      ## main2.log <- matrix(main.log,nrow=dim(p.value)[2], ncol=dim(p.value)[1])
       ## main2.log <- t(main2.log)
       main1.log <- getData(sgi, screen = s, channel = c, type="main", design="template", format="targetMatrix", do.inv.trafo=FALSE)
       main2.log <- getData(sgi, screen = s, channel = c, type="main", design="query", format="targetMatrix", do.inv.trafo=FALSE)
@@ -79,8 +79,8 @@ reportGeneLists <- function(sgi, verbose = 0, path = ".", dir = "hitlist", prefi
                        neg = getMainNeg(sgi, screen=s, channel=c, do.inv.trafo=FALSE),
                        NI = NI.log[UT], Measured = D.log[UT], pi = PI.log[UT])
 
-      ## isctrl1 <- matrix(names(maint) %in% controls,nr=dim(p.value)[1], nc=dim(p.value)[2])
-      ## isctrl2 <- matrix(names(maint) %in% controls,nr=dim(p.value)[2], nc=dim(p.value)[1])
+      ## isctrl1 <- matrix(names(maint) %in% controls,nrow=dim(p.value)[1], ncol=dim(p.value)[2])
+      ## isctrl2 <- matrix(names(maint) %in% controls,nrow=dim(p.value)[2], ncol=dim(p.value)[1])
       ## isctrl2 <- t(isctrl2)
       ## isctrl <- isctrl1[UT] | isctrl2[UT]
       isctrl <- (GL$gene1 %in% controls) | (GL$gene2 %in% controls)

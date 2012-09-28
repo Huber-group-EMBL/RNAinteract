@@ -16,7 +16,7 @@ normalizePlateEffect <- function(sgi, type="Bscore", maxit=20,verbose=0) {
   pdim = c(16,12)
   
   D <- getData(sgi,type="pi",format="plain")
-  plate <- matrix(NA,nr=pdim[1],nc=pdim[2])
+  plate <- matrix(NA,nrow=pdim[1],ncol=pdim[2])
   tmp <- rep(0,length(plate))
   names(tmp) <- sprintf("%s%0.2d",rep(LETTERS[1:pdim[1]],times=pdim[2]),rep(1:pdim[2],each=pdim[1]))
   row.names(plate) <- LETTERS[1:pdim[1]]
@@ -98,7 +98,7 @@ normalizePlateEffect <- function(sgi, type="Bscore", maxit=20,verbose=0) {
           tmp[Well[I]] <- D[I,s,c]
           plate[] <- tmp
           M = medpolish(plate,na.rm=TRUE)
-          PE <- matrix(M$row,nr=pdim[1],nc=pdim[2]) + t(matrix(M$col,nr=pdim[2],nc=pdim[1])) + M$overall
+          PE <- matrix(M$row,nrow=pdim[1],ncol=pdim[2]) + t(matrix(M$col,nrow=pdim[2],ncol=pdim[1])) + M$overall
           plate <- plate - PE
           tmp[] <- plate[]
           D[I,s,c] <- tmp[Well[I]]

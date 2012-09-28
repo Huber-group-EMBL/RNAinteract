@@ -38,11 +38,11 @@ reportNetworks <- function(sgi, verbose = 0, path = ".", dir = "networks", prefi
     for (c in getChannelNames(sgi)) {
       res[[s]][[c]] = list()
       K <- dim(NW)[3]
-      pv <- matrix(NA,nr=K,nc=2)
+      pv <- matrix(NA,nrow=K,ncol=2)
       colnames(pv) <- c("p-value","odds-ratio")
       row.names(pv) <- dimnames(NW)[[3]]
-      fn.png <- matrix("",nr=K,nc=1)
-      fn.pdf <- matrix("",nr=K,nc=1)
+      fn.png <- matrix("",nrow=K,ncol=1)
+      fn.pdf <- matrix("",nrow=K,ncol=1)
       C <- list()
       for (k in 1:K) {
         res[[s]][[c]][[k]] = list()
@@ -62,7 +62,7 @@ reportNetworks <- function(sgi, verbose = 0, path = ".", dir = "networks", prefi
 
         D = data.frame(g=factor(c(0,0,1,1),levels=c(0,1)),n=factor(c(0,1,0,1),levels=c(0,1)),v=c(0,t[1,2],t[2,1],t[2,2]))
         fn.png[k,1] <- sprintf("%s/%s/%s-ballon_%s_%s_%s.png",path, dir, prefix,s,c,name)
-        png(width=150,height=150,file=fn.png[k,1])
+        png(width=150,height=150,filename=fn.png[k,1])
         par(mar=c(0.1,0.1,0.1,0.1))
         balloonplot(D$n,D$g,D$v,xlab=name,ylab=c,main="",cum.margins=FALSE)
         dev.off()
