@@ -1,7 +1,7 @@
 Package: RNAinteract
 Type: Package
 Title: Estimate Pairwise Interactions from multidimensional features
-Version: 1.5.2
+Version: 1.5.3
 Date: 2012-01-03
 Author: Bernd Fischer <bernd.fischer@embl.de>
 Maintainer: Bernd Fischer <bernd.fischer@embl.de>
@@ -19,6 +19,6 @@ LazyLoad: yes
 Imports: RColorBrewer, ICS, ICSNP, cellHTS2, geneplotter, gplots,
         grid, hwriter, lattice, latticeExtra,
         limma, methods, splots (>= 1.13.12)
-Depends: R (>= 2.12.0), methods, abind, locfit, Biobase
+Depends: R (>= 2.12.0), abind, locfit, Biobase
 biocViews: CellBasedAssays, QualityControl, Preprocessing, Visualization
 
