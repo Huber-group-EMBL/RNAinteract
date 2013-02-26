@@ -84,7 +84,7 @@ reportScreenData <- function(sgi, type="data", design = "template", do.trafo = T
       png(width=png.args$width, height=png.args$height, filename=fn.png)
       plotScreenData(sgi, type = type, design = design, do.trafo = do.trafo, do.inv.trafo = do.inv.trafo, screen = s, channel = c,normalized=TRUE, plotScreen.args = plotScreen.args)
       dev.off()
-      pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf, maxRasters=1024)
+      pdf(width=pdf.args$width, height=pdf.args$height, file=fn.pdf)
       plotScreenData(sgi, type = type, design = design, do.trafo = do.trafo, do.inv.trafo = do.inv.trafo, screen = s, channel = c,normalized=TRUE, plotScreen.args = plotScreen.args)
       dev.off()
 
