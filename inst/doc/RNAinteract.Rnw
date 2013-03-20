@@ -43,7 +43,15 @@
 \tableofcontents
 
 \section{Introduction}
-The package contains an analysis pipeline for data from quantitative interaction screens. The package is the basis for the analysis of an RNAi interaction screen reported in Horn, Sandmann, Fischer, et al., Mapping of Signalling Networks through Synthetic Genetic Interaction Analysis by RNAi, Nature Methods, 2011. This package provides the software that implements the methods used in this paper; these methods are further described in the Supplemental Methods section of the paper.
+The package contains an analysis pipeline for data from quantitative interaction screens. The package is the basis for the analysis of an RNAi interaction screen reported in \\\\
+\begin{center}
+\begin{minipage}[t]{0.8\textwidth}
+  Thomas Horn, Thomas Sandmann, Bernd Fischer, Elin Axelsson, Wolfgang
+Huber, and Michael Boutros (2011):{\it  Mapping of Signalling Networks
+through Synthetic Genetic Interaction Analysis by RNAi}, Nature Methods 8(4): 341-346. \\\\
+\end{minipage}
+\end{center}
+This package provides the software that implements the methods used in this paper; these methods are further described in the Supplemental Methods section of the paper.
 
 \section{Installation of the RNAinteract package}
 To install the package \Rpackage{RNAinteract}, you need a running version of \R~(www.r-project.org, version $\geq 2.13.0$). After installing \R~you can run the following commands from the \R~command shell to install \Rpackage{RNAinteract} and all required packages.
