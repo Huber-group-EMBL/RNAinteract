@@ -1,7 +1,7 @@
 Package: RNAinteract
 Type: Package
 Title: Estimate Pairwise Interactions from multidimensional features
-Version: 1.21.0
+Version: 1.22.0
 Author: Bernd Fischer <b.fischer@dkfz.de>
 Maintainer: Bernd Fischer <b.fischer@dkfz.de>
 Description: RNAinteract estimates genetic interactions from
