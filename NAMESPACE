@@ -13,6 +13,19 @@ importFrom(latticeExtra, dendrogramGrob)
 importFrom(limma, eBayes, lmFit)
 importFrom(splots, plotScreen)
 
+importFrom("grDevices", "col2rgb", "colorRampPalette", "dev.off",
+           "pdf", "png", "rainbow")
+importFrom("graphics", "legend", "par", "points", "smoothScatter")
+importFrom("methods", "getClassDef", "is", "new")
+importFrom("stats", "C", "as.dendrogram", "cor", "df", "dist",
+           "fisher.test", "hclust", "lm", "mad", "median", "medpolish",
+           "order.dendrogram", "p.adjust", "prcomp", "predict", "pt",
+           "quantile", "sd")
+importFrom("utils", "read.table", "write.table")
+importFrom("Biobase", "assayDataNew")
+import(abind)
+import(locfit)
+
 ## classes
 exportClasses(RNAinteract)
 
